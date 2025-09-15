@@ -4,7 +4,7 @@ import torch
 from transformers import AutoTokenizer, AutoModel
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler, normalize
-import umap
+from sklearn.decomposition import PCA
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -72,13 +72,13 @@ def process_embeddings(descriptions):
     scaler = StandardScaler()
     embeddings_scaled = scaler.fit_transform(embeddings.numpy())
 
-    # Use UMAP with n_components=2 for visualization
-    reducer_2d = umap.UMAP(n_neighbors=10, min_dist=0.1, n_components=2, random_state=42)
+    # Use PCA with n_components=2 for visualization
+    reducer_2d = PCA(n_components=2, random_state=42)
     embeddings_reduced_2d = reducer_2d.fit_transform(embeddings_scaled)
     embeddings_reduced_2d = normalize(embeddings_reduced_2d)
 
-    # Use UMAP with n_components=15 for clustering
-    reducer_clustering = umap.UMAP(n_neighbors=10, min_dist=0.1, n_components=15, random_state=42)
+    # Use PCA with n_components=15 for clustering
+    reducer_clustering = PCA(n_components=15, random_state=42)
     embeddings_reduced_clustering = reducer_clustering.fit_transform(embeddings_scaled)
     embeddings_reduced_clustering = normalize(embeddings_reduced_clustering)
 
@@ -132,7 +132,7 @@ def find_recommendations(query, unique_labs, kmeans_model, embeddings_reduced_cl
 
 # Streamlit App
 def main():
-    st.title("🎓 Course Recommendation System")
+    st.title("Course Recommendation System")
     st.markdown("Find courses similar to your interests using AI-powered recommendations!")
     
     # Load data and models
@@ -168,17 +168,17 @@ def main():
     # Add cluster labels to the dataframe
     unique_labs['cluster'] = kmeans_model.labels_
     
-    st.success(f"✅ Loaded {len(unique_labs)} courses successfully!")
+    st.success(f"Loaded {len(unique_labs)} courses successfully!")
 
     # User input
-    st.subheader("🔍 Find Your Perfect Course")
+    st.subheader("Find Your Perfect Course")
     query = st.text_input(
         "Enter a course description or topic:", 
         placeholder="e.g., Machine Learning, Data Science, Web Development"
     )
 
     # Get recommendations
-    if st.button("🚀 Get Recommendations", type="primary"):
+    if st.button("Get Recommendations", type="primary"):
         if query.strip():
             with st.spinner("Finding the best courses for you..."):
                 recommendations = find_recommendations(
@@ -187,7 +187,7 @@ def main():
                 )
                 
             if not recommendations.empty:
-                st.subheader("📚 Recommended Courses:")
+                st.subheader("Recommended Courses:")
                 for i, (index, row) in enumerate(recommendations.iterrows(), 1):
                     with st.expander(f"#{i} - Similarity: {row['similarity']:.3f}"):
                         st.write(row['description'])
@@ -199,8 +199,8 @@ def main():
             st.warning("Please enter a query.")
 
     # Visualization option
-    st.subheader("📊 Data Visualization")
-    if st.checkbox("Show Clustering Visualization (2D UMAP)"):
+    st.subheader("Data Visualization")
+    if st.checkbox("Show Clustering Visualization (2D PCA)"):
         if embeddings_reduced_2d is not None:
             fig, ax = plt.subplots(figsize=(12, 8))
             scatter = ax.scatter(
@@ -211,14 +211,15 @@ def main():
                 s=30,
                 alpha=0.7
             )
-            ax.set_title("Course Clustering Visualization (2D UMAP)")
-            ax.set_xlabel("UMAP Dimension 1")
-            ax.set_ylabel("UMAP Dimension 2")
+            ax.set_title("Course Clustering Visualization (2D PCA)")
+            ax.set_xlabel("PCA Dimension 1")
+            ax.set_ylabel("PCA Dimension 2")
             
             # Add colorbar
             plt.colorbar(scatter, ax=ax, label="Cluster")
             
             st.pyplot(fig)
+            plt.close()  # Clean up memory
             
             # Show cluster statistics
             cluster_counts = unique_labs['cluster'].value_counts().sort_index()
