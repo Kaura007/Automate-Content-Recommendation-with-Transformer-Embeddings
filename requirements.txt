@@ -1,6 +1,8 @@
-streamlit
+streamlit>=1.0.0
+pandas
+numpy
+scikit-learn
 transformers
 torch
-scikit-learn
-numpy
-pandas
+matplotlib
+seaborn
