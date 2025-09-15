@@ -1,0 +1,10 @@
+torch
+transformers
+scikit-learn
+pandas
+numpy
+tqdm
+flask
+gunicorn
+sentence-transformers
+streamlit
