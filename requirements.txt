@@ -1,8 +1,8 @@
-streamlit>=1.0.0
+streamlit
 pandas
-numpy
-scikit-learn
-transformers
 torch
+transformers
+scikit-learn
+umap-learn
+numpy
 matplotlib
-seaborn
