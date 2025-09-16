@@ -46,7 +46,7 @@ This project guides you through the following key stages:
 ## Setup
 
 To run this project, you will need to install the required libraries:# Automate-Content-Recommendation-with-Transformer-Embeddings
-clone the repoisotory:
+clone the repoisotory:git clone https://github.com/Kaura007/Automate-Content-Recommendation-with-Transformer-Embeddings.git
 
 set up virtual environment: python -m venv .venv
 
