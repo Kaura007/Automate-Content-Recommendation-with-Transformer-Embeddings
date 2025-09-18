@@ -22,8 +22,13 @@ The techniques explored in this project have numerous real-world applications ac
 * **Online Course Recommendation:** Recommend relevant courses to students based on their learning interests and the content of courses they have already taken.
 * **Document Organization and Search:** Improve document management systems by clustering similar documents and enhancing search capabilities based on semantic understanding.
 * **Customer Support Ticket Routing:** Automatically route customer support tickets to the appropriate teams based on the content and nature of the issue.
-
+  `
 ## Project Overview
+                         **High level Architecture Diagram**
+  **
+`
+<img width="400" height="400" alt="mermaid-diagram-2025-09-17-214751" src="https://github.com/user-attachments/assets/9db291ac-6c07-4783-8656-1a22a08385bb" />
+
 
 This project guides you through the following key stages:
 
